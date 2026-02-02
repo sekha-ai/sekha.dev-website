@@ -69,12 +69,12 @@ const Footer = () => {
               </li>
               <li>
                 <a 
-                  href="https://hub.docker.com/r/sekhaai/sekha-controller" 
+                  href="https://github.com/orgs/sekha-ai/packages" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="hover:text-white transition-colors"
                 >
-                  Docker Hub
+                  Docker Images
                 </a>
               </li>
               <li>

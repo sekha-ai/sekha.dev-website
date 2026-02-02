@@ -13,6 +13,7 @@ import Pricing from './sections/Pricing'
 import CTA from './sections/CTA'
 import Footer from './sections/Footer'
 import './App.css'
+import ComparisonSection from './sections/ComparisonSection'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -51,6 +52,7 @@ function App() {
       <main>
         <Hero />
         <Problem />
+        <ComparisonSection />
         <Solution />
         <Connect />
         <Architecture />

@@ -2,8 +2,9 @@ const Solution = () => {
   return (
     <section className="py-32 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* CHANGE: Updated heading text */}
         <div className="text-center mb-16 reveal">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">The Context Broker</h2>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">How It Works</h2>
           <p className="text-xl text-sekha-100">Not storage. Intelligence.</p>
         </div>
         
@@ -17,25 +18,56 @@ const Solution = () => {
               </p>
             </div>
             
-            <div className="glass rounded-xl p-6 border border-white/10 font-mono text-sm overflow-x-auto">
-              <div className="text-gray-500 mb-2">{'{'}</div>
-              <div className="pl-4 text-sekha-100">"library_card": {'{'}</div>
-              <div className="pl-8 text-gray-300">"label": <span className="text-green-400">"Project:AI-Memory-Controller"</span>,</div>
-              <div className="pl-8 text-gray-300">"folder": <span className="text-green-400">"Work/2025-Strategic"</span>,</div>
-              <div className="pl-8 text-gray-300">"importance": <span className="text-yellow-400">9</span>,</div>
-              <div className="pl-8 text-gray-300">"semantic_tags": [<span className="text-green-400">"architecture"</span>, <span className="text-green-400">"rust"</span>],</div>
-              <div className="pl-8 text-gray-300">"session_count": <span className="text-yellow-400">47</span>,</div>
-              <div className="pl-8 text-gray-300">"status": <span className="text-green-400">"active"</span></div>
-              <div className="pl-4 text-sekha-100">{'}'}</div>
-              <div className="text-gray-500">{'}'}</div>
+            {/* ENHANCED: Added window chrome wrapper and glow */}
+            <div className="relative group">
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl blur opacity-0 group-hover:opacity-20 transition duration-500"></div>
+              <div className="relative glass rounded-xl border border-white/10 overflow-hidden">
+                {/* Added window header */}
+                <div className="flex items-center justify-between px-4 py-2 bg-white/5 border-b border-white/10">
+                  <span className="text-xs text-gray-500 font-mono">library_card.json</span>
+                  <div className="flex gap-1.5">
+                    <div className="w-2.5 h-2.5 rounded-full bg-red-500/20"></div>
+                    <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/20"></div>
+                    <div className="w-2.5 h-2.5 rounded-full bg-green-500/20"></div>
+                  </div>
+                </div>
+                <div className="p-6 font-mono text-sm overflow-x-auto">
+                  <div className="text-gray-500 mb-2">{'{'}</div>
+                  <div className="pl-4 text-sekha-100">"library_card": {'{'}</div>
+                  <div className="pl-8 text-gray-300">"id": <span className="text-green-400">"conv_a7f2k9"</span>,</div>
+                  <div className="pl-8 text-gray-300">"label": <span className="text-green-400">"Project:AI-Memory-Controller"</span>,</div>
+                  <div className="pl-8 text-gray-300">"folder": <span className="text-green-400">"Work/2025-Strategic"</span>,</div>
+                  <div className="pl-8 text-gray-300">"importance": <span className="text-yellow-400">9</span>,</div>
+                  <div className="pl-8 text-gray-300">"semantic_tags": [<span className="text-green-400">"architecture"</span>, <span className="text-green-400">"rust"</span>],</div>
+                  {/* ADDED: More fields for richness */}
+                  <div className="pl-8 text-gray-300">"session_count": <span className="text-yellow-400">47</span>,</div>
+                  <div className="pl-8 text-gray-300">"word_count": <span className="text-yellow-400">12845</span>,</div>
+                  <div className="pl-8 text-gray-300">"status": <span className="text-green-400">"active"</span></div>
+                  <div className="pl-4 text-sekha-100">{'}'}</div>
+                  <div className="text-gray-500">{'}'}</div>
+                </div>
+              </div>
             </div>
             
-            <p className="text-gray-400 mt-6 text-sm">
+            {/* ADDED: Annotation pills */}
+            <div className="flex flex-wrap gap-2 mt-4">
+              <span className="px-3 py-1 rounded-full bg-purple-500/10 text-purple-400 border border-purple-500/20 text-xs">
+                Structured Metadata
+              </span>
+              <span className="px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 text-xs">
+                User Controlled
+              </span>
+              <span className="px-3 py-1 rounded-full bg-green-500/10 text-green-400 border border-green-500/20 text-xs">
+                Portable SQLite
+              </span>
+            </div>
+            
+            <p className="text-gray-400 mt-6 text-sm italic">
               Not files dumped in a directory. Memory that understands itself.
             </p>
           </div>
           
-          {/* 4-Phase Assembly Pipeline */}
+          {/* 4-Phase Assembly Pipeline (unchanged) */}
           <div className="reveal" style={{ transitionDelay: '100ms' }}>
             <h3 className="text-2xl font-bold mb-4 text-white">4-Phase Assembly Pipeline</h3>
             <p className="text-gray-400 leading-relaxed mb-6">
@@ -86,7 +118,7 @@ const Solution = () => {
           </div>
         </div>
         
-        {/* Technical Simplicity */}
+        {/* Technical Simplicity (unchanged) */}
         <div className="mt-16 text-center reveal">
           <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full glass border border-sekha-500/30">
             <span className="text-2xl font-bold text-sekha-100">Under 15,000</span>

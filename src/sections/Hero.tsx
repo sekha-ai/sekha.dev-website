@@ -30,10 +30,7 @@ const Hero = () => {
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center max-w-4xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-sekha-500/30 mb-8 reveal">
-            <span className="flex h-2 w-2 rounded-full bg-sekha-500 animate-pulse"></span>
-            <span className="text-sm text-sekha-100 font-medium">Now with MCP Protocol Support</span>
-          </div>
+          
           
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-4 reveal" style={{ transitionDelay: '100ms' }}>
             <span className="text-white">Sekha</span>{' '}
