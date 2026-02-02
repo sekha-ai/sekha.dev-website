@@ -44,7 +44,7 @@ const ComparisonSection = () => {
         </div>
 
         <div className="space-y-4 reveal">
-          {comparisons.map((item, idx) => (
+          {comparisons.map((item) => (
             <div 
               key={item.name}
               className={`p-6 rounded-xl border ${
