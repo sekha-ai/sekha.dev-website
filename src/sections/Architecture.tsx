@@ -5,21 +5,27 @@ const Architecture = () => {
 
   useEffect(() => {
     const archNodes = document.querySelectorAll('.arch-node')
+    function handleMouseEnter(this: HTMLElement) {
+      this.style.filter = 'brightness(1.3) drop-shadow(0 0 15px rgba(64, 81, 181, 0.6))'
+      document.querySelectorAll('.arch-line').forEach(line => {
+        (line as HTMLElement).style.opacity = '0.3'
+      })
+    }
+    function handleMouseLeave(this: HTMLElement) {
+      this.style.filter = ''
+      document.querySelectorAll('.arch-line').forEach(line => {
+        (line as HTMLElement).style.opacity = ''
+      })
+    }
     archNodes.forEach(node => {
-      const handleMouseEnter = () => {
-        ;(node as HTMLElement).style.filter = 'brightness(1.3) drop-shadow(0 0 10px rgba(64, 81, 181, 0.5))'
-      }
-      const handleMouseLeave = () => {
-        ;(node as HTMLElement).style.filter = ''
-      }
       node.addEventListener('mouseenter', handleMouseEnter)
       node.addEventListener('mouseleave', handleMouseLeave)
     })
 
     return () => {
       archNodes.forEach(node => {
-        node.removeEventListener('mouseenter', () => {})
-        node.removeEventListener('mouseleave', () => {})
+        node.removeEventListener('mouseenter', handleMouseEnter)
+        node.removeEventListener('mouseleave', handleMouseLeave)
       })
     }
   }, [])
@@ -73,13 +79,22 @@ const Architecture = () => {
 
         {/* Animated Architecture Diagram */}
         <div className="relative w-full max-w-5xl mx-auto aspect-[16/10] reveal mb-16">
-          <svg ref={svgRef} viewBox="0 0 800 500" className="w-full h-full" id="arch-diagram">
+          <svg ref={svgRef} viewBox="0 0 760 500" className="w-full h-full" id="arch-diagram">
             <defs>
-              <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-                <polygon points="0 0, 10 3.5, 0 7" fill="#4051b5" opacity="0.6"/>
+              {/* Blue arrow for request flow */}
+              <marker id="arrowhead-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                <polygon points="0 0, 10 3.5, 0 7" fill="#4051b5"/>
+              </marker>
+              {/* Purple arrow for LLM bridge */}
+              <marker id="arrowhead-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                <polygon points="0 0, 10 3.5, 0 7" fill="#805ad5"/>
+              </marker>
+              {/* Green arrow for response flow */}
+              <marker id="arrowhead-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                <polygon points="0 0, 10 3.5, 0 7" fill="#10b981"/>
               </marker>
               <filter id="glow">
-                <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
                 <feMerge>
                   <feMergeNode in="coloredBlur"/>
                   <feMergeNode in="SourceGraphic"/>
@@ -89,17 +104,17 @@ const Architecture = () => {
 
             {/* Layer 1: User/Agent */}
             <g className="arch-node" transform="translate(350, 50)">
-              <rect x="0" y="0" width="100" height="60" rx="8" fill="#1f2937" stroke="#4b5563" strokeWidth="2"/>
+              <rect x="0" y="0" width="100" height="60" rx="8" fill="#1f2937" stroke="#6b7280" strokeWidth="2"/>
               <text x="50" y="25" textAnchor="middle" fill="#fff" fontSize="12" fontWeight="600">User/Agent</text>
               <text x="50" y="45" textAnchor="middle" fill="#9ca3af" fontSize="10">Chat/Query</text>
             </g>
 
             {/* Layer 2: Sekha Controller */}
             <g className="arch-node" transform="translate(300, 150)">
-              <rect x="0" y="0" width="200" height="80" rx="8" fill="rgba(64, 81, 181, 0.2)" stroke="#4051b5" strokeWidth="2" filter="url(#glow)"/>
+              <rect x="0" y="0" width="200" height="80" rx="8" fill="rgba(64, 81, 181, 0.15)" stroke="#4051b5" strokeWidth="2" filter="url(#glow)"/>
               <text x="100" y="25" textAnchor="middle" fill="#fff" fontSize="14" fontWeight="700">Sekha Controller</text>
               <text x="100" y="45" textAnchor="middle" fill="#94a3b8" fontSize="10">Rust • REST API • MCP Server</text>
-              <text x="100" y="62" textAnchor="middle" fill="#805ad5" fontSize="9">4-Phase Context Assembly</text>
+              <text x="100" y="62" textAnchor="middle" fill="#a78bfa" fontSize="9">4-Phase Context Assembly</text>
             </g>
 
             {/* Layer 3: Storage */}
@@ -118,77 +133,91 @@ const Architecture = () => {
                 <text x="70" y="60" textAnchor="middle" fill="#9ca3af" fontSize="9">Semantic Search</text>
               </g>
 
+              {/* Redis - positioned better */}
               <g className="arch-node" transform="translate(85, 100)">
                 <rect x="0" y="0" width="140" height="60" rx="8" fill="#1f2937" stroke="#dc2626" strokeWidth="2"/>
-                <text x="70" y="25" textAnchor="middle" fill="#fff" fontSize="12" fontWeight="600">Redis</text>
-                <text x="70" y="42" textAnchor="middle" fill="#9ca3af" fontSize="9">Task Queue • Cache</text>
+                <text x="70" y="22" textAnchor="middle" fill="#fff" fontSize="12" fontWeight="600">Redis</text>
+                <text x="70" y="40" textAnchor="middle" fill="#9ca3af" fontSize="9">Task Queue • Cache</text>
               </g>
             </g>
 
             {/* Layer 4: LLM Bridge */}
             <g className="arch-node" transform="translate(500, 280)">
-              <rect x="0" y="0" width="200" height="100" rx="8" fill="rgba(128, 90, 213, 0.2)" stroke="#805ad5" strokeWidth="2" filter="url(#glow)"/>
+              <rect x="0" y="0" width="200" height="100" rx="8" fill="rgba(128, 90, 213, 0.15)" stroke="#805ad5" strokeWidth="2" filter="url(#glow)"/>
               <text x="100" y="25" textAnchor="middle" fill="#fff" fontSize="14" fontWeight="700">LLM Bridge</text>
               <text x="100" y="45" textAnchor="middle" fill="#94a3b8" fontSize="10">Python • LiteLLM • Celery</text>
               <text x="100" y="62" textAnchor="middle" fill="#9ca3af" fontSize="9">Embeddings • Summarization</text>
               <text x="100" y="79" textAnchor="middle" fill="#9ca3af" fontSize="9">Entity Extraction</text>
             </g>
 
-            {/* Layer 5: LLMs */}
-            <g transform="translate(350, 420)">
-              <g className="arch-node" transform="translate(0, 0)">
-                <rect x="0" y="0" width="80" height="50" rx="8" fill="#1f2937" stroke="#10b981" strokeWidth="1"/>
-                <text x="40" y="30" textAnchor="middle" fill="#fff" fontSize="11">OpenAI</text>
-              </g>
-              <g className="arch-node" transform="translate(90, 0)">
-                <rect x="0" y="0" width="80" height="50" rx="8" fill="#1f2937" stroke="#f59e0b" strokeWidth="1"/>
-                <text x="40" y="30" textAnchor="middle" fill="#fff" fontSize="11">Ollama</text>
-              </g>
-              <g className="arch-node" transform="translate(180, 0)">
-                <rect x="0" y="0" width="80" height="50" rx="8" fill="#1f2937" stroke="#ef4444" strokeWidth="1"/>
-                <text x="40" y="30" textAnchor="middle" fill="#fff" fontSize="11">Claude</text>
-              </g>
-              <text x="130" y="-10" textAnchor="middle" fill="#6b7280" fontSize="10">+ 97 more via LiteLLM</text>
+            {/* Layer 5: LLMs - Unified bar design */}
+            <g transform="translate(300, 420)">
+              <rect x="0" y="0" width="200" height="40" rx="20" fill="#1f2937" stroke="#805ad5" strokeWidth="2" opacity="0.8"/>
+              <text x="100" y="25" textAnchor="middle" fill="#fff" fontSize="12" fontWeight="600">100+ LLMs via LiteLLM</text>
+              
+              {/* Provider dots */}
+              {/* <circle cx="40" cy="20" r="6" fill="#10b981" opacity="0.4"/>
+              <circle cx="100" cy="20" r="6" fill="#f59e0b" opacity="0.4"/>
+              <circle cx="160" cy="20" r="6" fill="#ef4444" opacity="0.4"/> */}
             </g>
 
-            {/* Connection Lines */}
-            <line x1="400" y1="110" x2="400" y2="150" stroke="#4051b5" strokeWidth="2" markerEnd="url(#arrowhead)" className="arch-line"/>
-            <line x1="320" y1="230" x2="180" y2="280" stroke="#4051b5" strokeWidth="2" className="arch-line" opacity="0.6"/>
-            <line x1="340" y1="230" x2="340" y2="280" stroke="#4051b5" strokeWidth="2" className="arch-line" opacity="0.6"/>
-            <line x1="480" y1="230" x2="550" y2="280" stroke="#805ad5" strokeWidth="2" markerEnd="url(#arrowhead)" className="arch-line"/>
-            <line x1="550" y1="380" x2="440" y2="420" stroke="#805ad5" strokeWidth="2" markerEnd="url(#arrowhead)" className="arch-line"/>
-            <line x1="400" y1="420" x2="400" y2="470" stroke="#10b981" strokeWidth="2" strokeDasharray="5,5" markerEnd="url(#arrowhead)" className="arch-line" opacity="0.4">
-              <animate attributeName="stroke-dashoffset" values="0;20" dur="2s" repeatCount="indefinite"/>
+            {/* Connection Lines - Fixed styling */}
+            {/* Request flow */}
+            <line x1="400" y1="110" x2="400" y2="150" stroke="#4051b5" strokeWidth="2" markerEnd="url(#arrowhead-blue)" className="arch-line" opacity="0.8"/>
+            
+            {/* To Storage */}
+            <line x1="300" y1="210" x2="120" y2="280" stroke="#4051b5" strokeWidth="1.5" opacity="0.6"/>
+            <line x1="300" y1="210" x2="260" y2="280" stroke="#4051b5" strokeWidth="1.5" opacity="0.6"/>
+            {/* <line x1="360" y1="210" x2="195" y2="340" stroke="#dc2626" strokeWidth="1.5" opacity="0.5"/> */}
+            
+            {/* To LLM Bridge */}
+            <line x1="500" y1="220" x2="550" y2="280" stroke="#805ad5" strokeWidth="2" markerEnd="url(#arrowhead-purple)" className="arch-line" opacity="0.8"/>
+            
+            {/* To LLMs */}
+            <line x1="600" y1="380" x2="450" y2="420" stroke="#805ad5" strokeWidth="2" markerEnd="url(#arrowhead-purple)" className="arch-line" opacity="0.8"/>
+            
+            {/* Response flow */}
+            <line x1="400" y1="420" x2="400" y2="230" stroke="#10b981" strokeWidth="2" strokeDasharray="6,4" markerEnd="url(#arrowhead-green)" className="arch-line" opacity="0.6">
+              <animate attributeName="stroke-dashoffset" values="0;-20" dur="1.5s" repeatCount="indefinite"/>
             </line>
 
-            {/* Animated Data Packets */}
-            <circle r="4" fill="#4051b5" filter="url(#glow)">
-              <animateMotion dur="3s" repeatCount="indefinite" path="M400,110 L400,150"/>
+            {/* Data Packets - Simplified */}
+            <circle r="5" fill="#60a5fa" filter="url(#glow)" opacity="0.9">
+              <animateMotion dur="2s" repeatCount="indefinite" path="M400,110 L400,150 L320,210 L120,280"/>
             </circle>
-            <circle r="4" fill="#805ad5" filter="url(#glow)">
-              <animateMotion dur="3s" repeatCount="indefinite" begin="1.5s" path="M480,230 L550,280 L550,380 L440,420"/>
+            
+            <circle r="5" fill="#a78bfa" filter="url(#glow)" opacity="0.9">
+              <animateMotion dur="2s" repeatCount="indefinite" begin="0.7s" path="M480,190 L550,280 L600,380 L450,420"/>
             </circle>
-            <circle r="4" fill="#10b981" filter="url(#glow)">
-              <animateMotion dur="3s" repeatCount="indefinite" begin="2s" path="M400,420 L400,380 L400,230 L320,150"/>
+            
+            <circle r="5" fill="#34d399" filter="url(#glow)" opacity="0.9">
+              <animateMotion dur="2.2s" repeatCount="indefinite" begin="1.4s" path="M400,420 L400,100"/>
             </circle>
 
-            {/* Pulse Rings */}
-            <circle cx="400" cy="190" r="20" fill="none" stroke="#4051b5" strokeWidth="2" opacity="0" className="pulse-ring"/>
-            <circle cx="600" cy="330" r="30" fill="none" stroke="#805ad5" strokeWidth="2" opacity="0" className="pulse-ring" style={{ animationDelay: '1s' }}/>
+            {/* Pulse effects using SMIL instead of CSS */}
+            <circle cx="400" cy="190" r="25" fill="none" stroke="#4051b5" strokeWidth="2" opacity="0">
+              <animate attributeName="r" values="25;45" dur="2s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0.5;0" dur="2s" repeatCount="indefinite"/>
+            </circle>
+            
+            <circle cx="600" cy="330" r="30" fill="none" stroke="#805ad5" strokeWidth="2" opacity="0">
+              <animate attributeName="r" values="30;50" dur="2s" begin="1s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0.5;0" dur="2s" begin="1s" repeatCount="indefinite"/>
+            </circle>
           </svg>
 
-          {/* Legend */}
+          {/* Legend - Fixed colors */}
           <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm">
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-sekha-500"></div>
+              <div className="w-3 h-3 rounded-full bg-[#4051b5]"></div>
               <span className="text-gray-400">Request Flow</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-sekha-accent"></div>
+              <div className="w-3 h-3 rounded-full bg-[#805ad5]"></div>
               <span className="text-gray-400">LLM Bridge</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-green-500"></div>
+              <div className="w-3 h-3 rounded-full bg-[#10b981]"></div>
               <span className="text-gray-400">Response Flow</span>
             </div>
             <div className="flex items-center gap-2">

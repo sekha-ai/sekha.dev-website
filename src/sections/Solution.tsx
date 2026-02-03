@@ -81,7 +81,7 @@ const Solution = () => {
                 </div>
                 <div>
                   <h4 className="font-semibold text-white mb-1">Recall</h4>
-                  <p className="text-gray-400 text-sm">Pulls 200 semantic matches from ChromaDB + all pinned conversations + recent messages from preferred labels</p>
+                  <p className="text-gray-400 text-sm">Pulls semantic matches from ChromaDB + all pinned conversations + recent messages from preferred labels</p>
                 </div>
               </div>
               
@@ -91,7 +91,7 @@ const Solution = () => {
                 </div>
                 <div>
                   <h4 className="font-semibold text-white mb-1">Rank</h4>
-                  <p className="text-gray-400 text-sm">Scores each candidate using importance (50%), recency decay (30%), and label matching (20%)</p>
+                  <p className="text-gray-400 text-sm">Scores each candidate using importance, recency decay, and label matching</p>
                 </div>
               </div>
               
@@ -101,7 +101,7 @@ const Solution = () => {
                 </div>
                 <div>
                   <h4 className="font-semibold text-white mb-1">Assemble</h4>
-                  <p className="text-gray-400 text-sm">Greedily packs messages into your token budget (8,000 default, 15% reserved for system prompts)</p>
+                  <p className="text-gray-400 text-sm">Greedily packs messages into your token budget</p>
                 </div>
               </div>
               
@@ -125,7 +125,7 @@ const Solution = () => {
             <span className="text-gray-400">lines of core logic</span>
           </div>
           <p className="text-gray-500 mt-4 max-w-2xl mx-auto">
-            Following Wirth's Law: <em className="text-gray-400">"Simplicity is the constraint. A single developer can understand the entire system."</em> No Kubernetes required. SQLite + ChromaDB.
+            Following <a href="https://en.wikipedia.org/wiki/Wirth%27s_law" target="_blank" rel="noopener noreferrer" className="text-sekha-100 hover:underline">Wirth's Law:</a> <em className="text-gray-400">"Simplicity is the constraint. A single developer can understand the entire system."</em> No Kubernetes required. SQLite + ChromaDB.
           </p>
         </div>
       </div>

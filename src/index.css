@@ -104,19 +104,6 @@
     transform: scale(1.05);
     filter: brightness(1.2);
   }
-  
-  .arch-line {
-    stroke-dasharray: 5;
-    animation: dash 20s linear infinite;
-  }
-  
-  .data-packet {
-    animation: movePacket 3s linear infinite;
-  }
-  
-  .pulse-ring {
-    animation: pulse-ring 2s ease-out infinite;
-  }
 }
 
 @layer utilities {

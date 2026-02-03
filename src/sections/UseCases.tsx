@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 const useCases = [
   {
@@ -67,38 +67,90 @@ const useCases = [
   }
 ]
 
-const UseCases = () => {
-  const [showAll, setShowAll] = useState(false)
-  const visibleCases = showAll ? useCases : useCases.slice(0, 5)
+const UseCaseCard = ({ useCase, isVisible }: { useCase: typeof useCases[0], isVisible: boolean }) => {
+  const cardRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (isVisible && cardRef.current) {
+      cardRef.current.classList.add('visible')
+    }
+  }, [isVisible])
 
   return (
-    <section id="use-cases" className="py-32 relative">
+    <div 
+      ref={cardRef}
+      className={`group relative reveal-card ${isVisible ? 'block' : 'hidden'}`}
+    >
+      <div className="absolute inset-0 gradient-primary rounded-2xl blur-xl opacity-0 group-hover:opacity-20 transition-opacity duration-500"></div>
+      <div className="relative glass rounded-2xl p-6 h-full border border-white/5 hover:border-sekha-500/50 transition-colors">
+        <div className="text-3xl mb-4">{useCase.icon}</div>
+        <h3 className="text-lg font-bold mb-3 text-white">{useCase.title}</h3>
+        <p className="text-gray-400 text-sm mb-4">{useCase.description}</p>
+        <div className="space-y-2 text-sm">
+          <div className="flex gap-2">
+            <span className="text-red-400 flex-shrink-0 font-medium">Without:</span>
+            <span className="text-gray-500 italic">{useCase.without}</span>
+          </div>
+          <div className="flex gap-2">
+            <span className="text-green-400 flex-shrink-0 font-medium">With Sekha:</span>
+            <span className="text-gray-300">{useCase.with}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const UseCases = () => {
+  const [showAll, setShowAll] = useState(false)
+  const sectionRef = useRef<HTMLElement>(null)
+
+  // Reset scroll reveal when showing more
+  useEffect(() => {
+    if (showAll && sectionRef.current) {
+      const newCards = sectionRef.current.querySelectorAll('.reveal-card.hidden')
+      newCards.forEach((card, i) => {
+        setTimeout(() => {
+          card.classList.remove('hidden')
+          card.classList.add('block', 'fade-in-up')
+        }, i * 100)
+      })
+    }
+  }, [showAll])
+
+  return (
+    <section id="use-cases" ref={sectionRef} className="py-32 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16 reveal">
           <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">Built for Every Scale</h2>
           <p className="text-xl text-gray-400">From individual researchers to enterprise teams</p>
         </div>
         
+        {/* Grid: Always render all, but hide extras with CSS until showAll */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {visibleCases.map((useCase, index) => (
-            <div 
+          {useCases.map((useCase, index) => (
+            <div
               key={useCase.id}
-              className="group relative reveal"
-              style={{ transitionDelay: `${(index % 5) * 100}ms` }}
+              className={`${
+                index >= 5 && !showAll ? 'hidden' : 'block'
+              } reveal`}
+              style={{ transitionDelay: `${(index % 3) * 100}ms` }}
             >
-              <div className="absolute inset-0 gradient-primary rounded-2xl blur-xl opacity-0 group-hover:opacity-20 transition-opacity duration-500"></div>
-              <div className="relative glass rounded-2xl p-6 h-full border border-white/5 hover:border-sekha-500/50 transition-colors">
-                <div className="text-3xl mb-4">{useCase.icon}</div>
-                <h3 className="text-lg font-bold mb-3 text-white">{useCase.title}</h3>
-                <p className="text-gray-400 text-sm mb-4">{useCase.description}</p>
-                <div className="space-y-2 text-sm">
-                  <div className="flex gap-2">
-                    <span className="text-red-400 flex-shrink-0">Without:</span>
-                    <span className="text-gray-500 italic">{useCase.without}</span>
-                  </div>
-                  <div className="flex gap-2">
-                    <span className="text-green-400 flex-shrink-0">With Sekha:</span>
-                    <span className="text-gray-300">{useCase.with}</span>
+              <div className="group relative h-full">
+                <div className="absolute inset-0 gradient-primary rounded-2xl blur-xl opacity-0 group-hover:opacity-20 transition-opacity duration-500"></div>
+                <div className="relative glass rounded-2xl p-6 h-full border border-white/5 hover:border-sekha-500/50 transition-colors">
+                  <div className="text-3xl mb-4">{useCase.icon}</div>
+                  <h3 className="text-lg font-bold mb-3 text-white">{useCase.title}</h3>
+                  <p className="text-gray-400 text-sm mb-4">{useCase.description}</p>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex gap-2">
+                      <span className="text-red-400 flex-shrink-0 font-medium">Without:</span>
+                      <span className="text-gray-500 italic">{useCase.without}</span>
+                    </div>
+                    <div className="flex gap-2">
+                      <span className="text-green-400 flex-shrink-0 font-medium">With Sekha:</span>
+                      <span className="text-gray-300">{useCase.with}</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -106,19 +158,29 @@ const UseCases = () => {
           ))}
         </div>
         
-        {!showAll && (
-          <div className="text-center mt-10 reveal">
-            <button 
-              onClick={() => setShowAll(true)}
-              className="px-6 py-3 glass text-white rounded-lg font-medium hover:bg-white/10 transition-colors flex items-center gap-2 mx-auto"
-            >
-              Show 3 More
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7"/>
-              </svg>
-            </button>
-          </div>
-        )}
+        {/* Show More / Show Less Button */}
+        <div className="text-center mt-10 reveal">
+          <button 
+            onClick={() => setShowAll(!showAll)}
+            className="px-6 py-3 glass text-white rounded-lg font-medium hover:bg-white/10 transition-colors flex items-center gap-2 mx-auto"
+          >
+            {showAll ? (
+              <>
+                Show Less
+                <svg className="w-4 h-4 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7"/>
+                </svg>
+              </>
+            ) : (
+              <>
+                Show {useCases.length - 5} More
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7"/>
+                </svg>
+              </>
+            )}
+          </button>
+        </div>
       </div>
     </section>
   )

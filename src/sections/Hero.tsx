@@ -46,7 +46,7 @@ const Hero = () => {
           </p>
           
           <p className="text-lg text-sekha-100 mb-8 reveal" style={{ transitionDelay: '250ms' }}>
-            Built for 10-year memory, not 30-day threads.
+            Built for forever memory, not 30-day threads.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8 reveal" style={{ transitionDelay: '300ms' }}>
