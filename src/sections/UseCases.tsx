@@ -67,40 +67,6 @@ const useCases = [
   }
 ]
 
-const UseCaseCard = ({ useCase, isVisible }: { useCase: typeof useCases[0], isVisible: boolean }) => {
-  const cardRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    if (isVisible && cardRef.current) {
-      cardRef.current.classList.add('visible')
-    }
-  }, [isVisible])
-
-  return (
-    <div 
-      ref={cardRef}
-      className={`group relative reveal-card ${isVisible ? 'block' : 'hidden'}`}
-    >
-      <div className="absolute inset-0 gradient-primary rounded-2xl blur-xl opacity-0 group-hover:opacity-20 transition-opacity duration-500"></div>
-      <div className="relative glass rounded-2xl p-6 h-full border border-white/5 hover:border-sekha-500/50 transition-colors">
-        <div className="text-3xl mb-4">{useCase.icon}</div>
-        <h3 className="text-lg font-bold mb-3 text-white">{useCase.title}</h3>
-        <p className="text-gray-400 text-sm mb-4">{useCase.description}</p>
-        <div className="space-y-2 text-sm">
-          <div className="flex gap-2">
-            <span className="text-red-400 flex-shrink-0 font-medium">Without:</span>
-            <span className="text-gray-500 italic">{useCase.without}</span>
-          </div>
-          <div className="flex gap-2">
-            <span className="text-green-400 flex-shrink-0 font-medium">With Sekha:</span>
-            <span className="text-gray-300">{useCase.with}</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
-
 const UseCases = () => {
   const [showAll, setShowAll] = useState(false)
   const sectionRef = useRef<HTMLElement>(null)
